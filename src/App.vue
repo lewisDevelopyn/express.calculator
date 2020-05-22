@@ -42,10 +42,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      info: null,
-      operator: "",
-      numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
       current_value: "0",
+      numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+      operator: "",
       operators: [
         {
           sign: "+",
