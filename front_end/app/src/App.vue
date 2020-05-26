@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       current_value: "0",
+      logged_value: null,
       numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
       operator: "",
       operators: [
@@ -61,9 +62,12 @@ export default {
         {
           sign: "/",
           operator: "divide"
+        },
+        {
+          sign: "False",
+          operator: "False",
         }
       ],
-      logged_value: "0"
     };
   },
   methods: {
@@ -91,14 +95,11 @@ export default {
         .get(
           `http://localhost:3000/${this.operator}/${this.logged_value}/${this.current_value}`
         )
-        .then(response =>
-          isNaN(response.data)
-            ? (this.current_value = "Sorry, the answer was not a number!")
-            : (this.current_value = response.data)
-        )
+        .then(response => {
+            this.current_value = response.data;
+          })
         .catch(error => {
-          this.current_value = "Sorry, there was an error!";
-          console.log(error);
+          this.current_value = error.response.data;
         });
     },
     operator_clicked(operator) {
@@ -112,8 +113,8 @@ export default {
 <style>
 .box {
   border: 1px solid #3298dc;
-  margin: auto;
   height: 25rem;
+  margin: auto;
   width: 50%;
 }
 

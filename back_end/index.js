@@ -7,24 +7,58 @@ app.use(cors());
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.get('/add/:num_one/:num_two', (req, res) => {
-    let sum = parseFloat(req.params.num_one) + parseFloat(req.params.num_two);
-    res.send(sum.toString());
-})
+/*app.get('/:operator/:num_one/:num_two', (req, res) => {
 
-app.get('/subtract/:num_one/:num_two', (req, res) => {
-    let sum = parseFloat(req.params.num_one) - parseFloat(req.params.num_two);
-    res.send(sum.toString());
-})
+    let operators = {
+        'add': function (a, b) { return a + b },
+        'subtract': function (a, b) { return a - b },
+        'multiply': function (a, b) { return a * b },
+        'divide': function (a, b) { return a / b },
+    }
 
-app.get('/multiply/:num_one/:num_two', (req, res) => {
-    let sum = parseFloat(req.params.num_one) * parseFloat(req.params.num_two);
-    res.send(sum.toString());
-})
+    if (!operators.hasOwnProperty(req.params.operator)) {
+        res.status(400).send("Operator wasn't found.");
+    } else if (isNaN(req.params.num_one)) {
+        res.status(400).send("First input was not a number.");
+    } else if (isNaN(req.params.num_two)) {
+        res.status(400).send("Second input was not a number.")
+    } else {
+        let calculated = operators[req.params.operator](parseFloat(req.params.num_one), parseFloat(req.params.num_two)); // let calculated =  add (1, 2) { return 1 + 2 } etc
+        res.send(calculated.toString());
+    }
+})*/
 
-app.get('/divide/:num_one/:num_two', (req, res) => {
-    let sum = parseFloat(req.params.num_one) / parseFloat(req.params.num_two);
-    res.send(sum.toString());
+app.get('/:operator/:num_one/:num_two', (req, res) => {
+
+    let calculated;
+
+    if (isNaN(req.params.num_one)) {
+        res.status(400).send("First input wasn't a number.");
+    } else if (isNaN(req.params.num_two)) {
+        res.status(400).send("Second number wasn't a number.")
+    } else {
+        switch (req.params.operator) {
+            case 'add':
+                calculated = parseFloat(req.params.num_one) + parseFloat(req.params.num_two);
+                res.send(calculated.toString());
+                break;
+            case 'subtract':
+                calculated = parseFloat(req.params.num_one) - parseFloat(req.params.num_two);
+                res.send(calculated.toString());
+                break;
+            case 'divide':
+                calculated = parseFloat(req.params.num_one) / parseFloat(req.params.num_two);
+                res.send(calculated.toString());
+                break;
+            case 'multiply':
+                calculated = parseFloat(req.params.num_one) * parseFloat(req.params.num_two);
+                res.send(calculated.toString());
+                break;
+            default:
+                res.status(400).send(operator)
+                res.send("Operator not found");
+        }
+    }
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
